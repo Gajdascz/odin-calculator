@@ -3,7 +3,10 @@
 
 
 // Returns the sum of all numbers passed in as arguments.
-let sum = (...nums) => nums.reduce((accumulator, current) => accumulator + current);
+const add = (...nums) => nums.reduce((accumulator, current) => accumulator + current);
 
 // Returns the difference of all numbers passed in as arguments.
-let difference = (...nums) => nums.reduce((accumulator,current) => accumulator - current);
+const subtract = (...nums) => nums.reduce((accumulator,current) => accumulator - current);
+
+// Returns the product of all numbers passed in as arguments.
+const multiply = (...nums) => nums.reduce((accumulator,current) => accumulator * current);
