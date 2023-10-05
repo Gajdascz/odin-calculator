@@ -10,3 +10,9 @@ const subtract = (...nums) => nums.reduce((accumulator,current) => accumulator -
 
 // Returns the product of all numbers passed in as arguments.
 const multiply = (...nums) => nums.reduce((accumulator,current) => accumulator * current);
+
+// Returns the quotient of all numbers passed in as arguments.
+const divide = (...nums) => nums.reduce((accumulator,current) => accumulator / current);
+
+// Returns the power of the base and exponent passed in as arguments.
+const exponentiate = (base, exponent) => base ** exponent;
