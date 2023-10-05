@@ -14,10 +14,16 @@ const multiply = (...nums) => nums.reduce((accumulator,current) => accumulator *
 const divide = (...nums) => nums.reduce((accumulator,current) => accumulator / current);
 
 // Returns the power of the base and exponent passed in as arguments.
-const exponentiate = (base, exponent) => base ** exponent;
+const exponentiate = (base, exponent) => (base ** exponent);
 
 // Returns the product of all numbers up to the passed argument num.
-const factorial = (num) => factorial(n * (n-1));
+const factorial = (num) => (num === 0 || num === 1) ?  1: num * factorial(num-1);
+
+// Returns percentage of input per-hundred
+const percentage =(num) => (num/100);
+
+// Returns the remainder of dividend and divisor passed in as arguments. 
+const modulo = (dividend, divisor) => (dividend%divisor);
 
 function operate(numOne,numTwo=0,operator) {
   if (numOne > 0){
