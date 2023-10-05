@@ -46,6 +46,12 @@ function operate(numOne,numTwo=0,operator) {
       case `!`:
         factorial(numOne);
         break;
+      case `%`:
+        percentage(numOne);
+        break;
+      case `MOD`:
+        modulo(numOne,numTwo);
+        break;
     }
   }
 }
