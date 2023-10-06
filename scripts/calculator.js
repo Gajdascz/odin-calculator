@@ -25,33 +25,36 @@ const percentage =(num) => (num/100);
 // Returns the remainder of dividend and divisor passed in as arguments. 
 const modulo = (dividend, divisor) => (dividend%divisor);
 
-function operate(numOne,numTwo=0,operator) {
-  if (numOne > 0){
+function operate(numOne=0,numTwo=0,operator) {
+  if ( (typeof(operator) !== `undefined`) ) {
+    let result = 0;
     switch(operator) {
       case `+`:
-        add(numOne,numTwo);
+        result = add(numOne,numTwo);
         break;
       case `-`:
-        subtract(numOne,numTwo);
+        result = subtract(numOne,numTwo);
         break;
       case `*`:
-        multiply(numOne,numTwo);
+        result = multiply(numOne,numTwo);
         break;
       case `/`:
-        divide(numOne,numTwo);
+        result = divide(numOne,numTwo);
         break;
       case `^`:
-        exponentiate(numOne,numTwo);
+        result = exponentiate(numOne,numTwo);
         break;
       case `!`:
-        factorial(numOne);
+        result = factorial(numOne);
         break;
       case `%`:
-        percentage(numOne);
+        result = percentage(numOne);
         break;
       case `MOD`:
-        modulo(numOne,numTwo);
+        result = modulo(numOne,numTwo);
         break;
     }
+    return result;
   }
+  return numOne;
 }
