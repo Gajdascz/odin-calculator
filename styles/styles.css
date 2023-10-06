@@ -7,25 +7,39 @@
   justify-content: center;
   border: 5px solid pink;
   padding: 50px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .calculator-container {
-  border: 5px solid blue;
+  border: 3px solid black;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  max-width: 290px;
 }
 
 .calculator-display-container {
-  border: 3px solid black;
   border-radius: 0px;
   display: flex;
+  padding: 0;
+  margin: 0;
 }
-#calculator-display {
+#calculator-display:disabled {
+  padding: 0;
   width: 100%;
-  height: 75px;
+  height: 50px;
+  text-align: end;
+  font-size: 45px;
+  background-color: lightblue;
+  padding: 5px;
+  border-top: 1px solid black;
+  border-bottom: 3px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
 }
-
+input:disabled::-webkit-input-placeholder { 
+  color: black;    
+}
 .calculator-buttons-container {
   background-color: black;
   display: flex;
@@ -40,8 +54,13 @@
   min-width: 56px;
   font-weight: bolder;
   font-size: 15px;
+  border: 1px solid black;
 }
-
-.button-equate, .button-modulo, .button-factorial, .button-percentage, .button-exponentiate {
+.calculator-row-container > button:hover {
+  background-color: #dddddd;
+}
+.button-equate, .button-modulo, .button-factorial,
+.button-percentage, .button-exponentiate, .button-add,
+.button-subtract, .button-multiply, .button-divide {
   width: 100%;
 }
