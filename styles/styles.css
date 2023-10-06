@@ -39,8 +39,9 @@
   padding: 10px;
   min-width: 56px;
   font-weight: bolder;
+  font-size: 15px;
 }
 
-.button-equate {
+.button-equate, .button-modulo, .button-factorial, .button-percentage, .button-exponentiate {
   width: 100%;
 }
