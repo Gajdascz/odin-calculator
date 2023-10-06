@@ -25,9 +25,18 @@ const percentage =(num) => (num/100);
 // Returns the remainder of dividend and divisor passed in as arguments. 
 const modulo = (dividend, divisor) => (dividend % divisor);
 
-function operate(numOne=0,numTwo=0,operator) {
-  if ( (typeof(operator) !== `undefined`) ) {
+
+const calculatorButtons = document.querySelectorAll(`.calculator-buttons-container > * > button`);
+const calculatorDisplay = document.querySelector(`input#calculator-display`);
+let expressionArray = [];
+let workingNum = ``;
+
+
+function operate(expressionArray) {
     let result = 0;
+    let numOne = expressionArray[0];
+    let numTwo = expressionArray[1];
+    let operator = expressionArray[2];
     switch(operator) {
       case `+`:
         result = add(numOne,numTwo);
@@ -52,9 +61,92 @@ function operate(numOne=0,numTwo=0,operator) {
         break;
       case `MOD`:
         result = modulo(numOne,numTwo);
-        break;
+        break;         
     }
     return result;
-  }
-  return numOne;
 }
+
+
+let isNum = (buttonValue) =>  (/\d/).test(buttonValue);
+let isOperator = (buttonValue) => {
+  switch(buttonValue) {
+    case `+`:
+      return buttonValue;
+    case `-`:
+      return buttonValue;
+    case `*`:
+      return buttonValue;
+    case `/`:
+      return buttonValue;
+    case `^`:
+      return buttonValue;
+    case `!`:
+      return buttonValue;
+    case `%`:
+      return buttonValue;
+    case `MOD`:
+      return buttonValue;
+  }
+  return false;
+}
+let isAction = (buttonValue) => {
+  switch(buttonValue) {
+    case `AC`:
+      return buttonValue;
+    case `⬅`:
+      return buttonValue;
+    case `=`:
+      return buttonValue;
+  }
+}
+
+
+let doAction = (action) => {
+  switch(action) {
+    case `AC`:
+      allClear();
+      break;
+    case `⬅`:
+      removeLast();
+    case `=`:
+      return action;
+  }
+}
+
+let allClear = () => {
+  calculatorDisplay.value = ``;
+  workingNum.textContent = ``;
+  expressionArray = [];
+}
+let removeLast = () => calculatorDisplay.value = calculatorDisplay.value.slice(0,-1);
+
+
+
+function display(buttonValue) {
+
+  calculatorDisplay.value += buttonValue;
+}
+
+
+
+calculatorButtons.forEach((button) => {
+  button.addEventListener(`click`, () => {
+    if(isNum(button.textContent)) {
+       workingNum += button.textContent;
+       display(button.textContent); 
+      }
+    if(isAction(button.textContent))  { 
+      doAction(button.textContent); 
+    }
+    if(isOperator(button.textContent))  {
+      if(button.textContent === `!` || button.textContent ===`%` && workingNum !== ``) { workingNum = operate(workingNum,0,button.textContent); }
+      console.log(workingNum);
+      if(expressionArray.length < 2)
+        expressionArray.push(workingNum);
+        workingNum = ``;
+    }
+  });
+});
+
+// added calculator button selector and eventListeners, disabled paren buttons, added display function,
+// added expression array 

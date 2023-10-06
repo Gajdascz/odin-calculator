@@ -36,6 +36,7 @@
   border-bottom: 3px solid black;
   border-right: 1px solid black;
   border-left: 1px solid black;
+  color:black;
 }
 input:disabled::-webkit-input-placeholder { 
   color: black;    
@@ -58,6 +59,9 @@ input:disabled::-webkit-input-placeholder {
 }
 .calculator-row-container > button:hover {
   background-color: #dddddd;
+}
+.calculator-row-container > button:disabled:hover {
+  background-color: #EFEFEF4D;
 }
 .button-equate, .button-modulo, .button-factorial,
 .button-percentage, .button-exponentiate, .button-add,
