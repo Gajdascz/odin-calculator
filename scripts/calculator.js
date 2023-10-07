@@ -76,6 +76,22 @@ function operate(expressionArray) {
             break;
         }
     }
+    if(result === infinity){
+      alert(`You've hit Infinity! Resetting Calculator`);
+      result = ``;
+      allClear();
+    }
+    if(result.length > 47) {
+      alert(`Result: ${result} is too large for the calculator display! Resetting Calculator.`);
+      result = ``;
+      allClear();
+    }
+    if(result.includes(`.`)) {
+      alert(`Rounding to the nearest (10^20) decimal.`);
+      result = Math.round(+result*(10**20))/(10**20);
+      result = result.toString();
+    }
+    checkDisplay();
     return result;
 }
 
@@ -95,11 +111,13 @@ let allClear = () => {
   expressionArray.length = 0;
   calculatorDecimalButton.removeAttribute(`disabled`);
   enableOperators();
+  checkDisplay();
 }
 let removeLast = () => {
   if(calculatorDisplay.value.slice(-1) === `.`) calculatorDecimalButton.removeAttribute(`disabled`);
   calculatorDisplay.value = calculatorDisplay.value.slice(0,-1);
   workingNum = calculatorDisplay.value;
+  checkDisplay();
 }
 
 
@@ -175,7 +193,9 @@ let equate = () => {
   if(workingNum === `/0`) { 
     allClear();
     calculatorDisplay.value = `learn2math`;
-  } else { calculatorDisplay.value = workingNum; }
+  } else { 
+    calculatorDisplay.value = workingNum;
+  }
 }
 
 let isNum = (buttonValue) =>  {
@@ -185,6 +205,10 @@ let isNum = (buttonValue) =>  {
 let singleNumExpression = (buttonValue) => {
   if(workingNum.includes(`.`) && buttonValue.includes(`!`)) alert(`Cannot perform factorial with decimal number.`);
   if(+workingNum < 0 && buttonValue.includes(`!`)) alert(`Cannot perform factorial with negative number.`);
+  if(+workingNum >= 153 && buttonValue.includes(`!`)) {
+    alert(`Factorials over 153 result in Infinity. Stopping calculation.`);
+    return;
+  }
   else {
     if(buttonValue.includes(`%`)) calculatorDecimalButton.setAttribute(`disabled`, ``);
     if(buttonValue.includes(`%`) && workingNum === `0` || workingNum === ``) return;
@@ -192,6 +216,7 @@ let singleNumExpression = (buttonValue) => {
     calculatorDisplay.value = workingNum;
     expressionArray.length = 0;
     expressionArray.push(workingNum);
+    checkDisplay();
   }
 }
 
@@ -220,8 +245,32 @@ let updateWorkingNum = (buttonValue) => {
   } else {
     calculatorDisplay.value = expressionArray.join(``) + workingNum;
   }
+  checkDisplay();
 }
 
+let checkDisplay = () => {
+  if(calculatorDisplay.value.length < 11) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 40px;`);
+  }
+  else if(calculatorDisplay.value.length > 11 && calculatorDisplay.value.length < 18) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 25px;`);
+  }
+  else if(calculatorDisplay.value.length < 18 && calculatorDisplay.value.length > 11) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 25px;`);
+  }
+  else if(calculatorDisplay.value.length > 18 && calculatorDisplay.value.length < 31) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 15px;`);
+  }
+  else if(calculatorDisplay.value.length < 31 && calculatorDisplay.value.length > 18) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 25px;`);
+  }
+  else if(calculatorDisplay.value.length > 31 && calculatorDisplay.value.length <= 47) {
+    calculatorDisplay.setAttribute(`style`, `font-size: 10px;`);
+  } else if(calculatorDisplay.value.length == 48) {
+    alert(`This calculator can only display 47 characters.`)
+    removeLast();
+  }
+}
 
 calculatorButtons.forEach((button) => {
   button.addEventListener(`click`, () => {
