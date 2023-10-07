@@ -31,41 +31,52 @@ const operatorButtons = document.querySelectorAll(`.button-operator`);
 const calculatorDisplay = document.querySelector(`input#calculator-display`);
 const calculatorDecimalButton = document.querySelector(`.button-decimal`);
 const expressionArray = [];
-let workingNum = `0`;
+let workingNum = ``;
 
 
 function operate(expressionArray) {
+    let result = ``;
     let numOne = +expressionArray[0];
     let operator = expressionArray[1];
     let numTwo = +expressionArray[2];
     switch(operator) {
       case `+`:
-        return add(numOne,numTwo);
+        result = add(numOne,numTwo).toString();
+        break;
       case `-`:
-        return subtract(numOne,numTwo);
+        result = subtract(numOne,numTwo).toString();
+        break;
       case `*`:
-        return multiply(numOne,numTwo);
+        result = multiply(numOne,numTwo).toString(); 
+        break; 
       case `/`:
         if(numTwo === 0) {
-          alert(`Cannot divide by zero!`)
-          return `/0`;
-        } else { return divide(numOne,numTwo); }
+          alert(`Cannot divide by zero!`);
+          result = `/0`;
+          break;
+        } else { 
+            result = divide(numOne,numTwo).toString();
+            break;
+        }
       case `^`:
-        return exponentiate(numOne,numTwo);
-
+        result = exponentiate(numOne,numTwo).toString(); 
+        break;
       case `!`:
-        return factorial(numOne);
-
+        result = factorial(numOne).toString();
+        break;
       case `%`:
-        return percentage(numOne);
-
+        result = percentage(numOne).toString();
+        break;
       case `MOD`:
         if(numOne === 0 || numTwo === 0) { 
-        alert(`Cannot perform modulo with zero`);
-        return `0`;
-        } else { return modulo(numOne,numTwo); }
-
+          alert(`Cannot perform modulo with zero`);
+          result = `0`;
+        } else { 
+            result = modulo(numOne,numTwo).toString();
+            break;
+        }
     }
+    return result;
 }
 
 let disableOperators = () => {
@@ -149,40 +160,34 @@ let doAction = (action,expressionArray=[]) => {
 }
 
 let equate = () => {
-  if(expressionArray.length === 0) {
-    expressionArray.push(workingNum);
-    return workingNum;
-  } else if(expressionArray.length === 2) {
-    expressionArray.push(`0`);
-    workingNum = operate(expressionArray);
+  if(expressionArray.length === 0 || expressionArray.length === 1) {
+    expressionArray[0] = workingNum;
   }
-  if (workingNum === `/0`){ 
+  else if(expressionArray.length === 2) { 
+    expressionArray[2] = workingNum; 
+  }
+  if(expressionArray.length === 3) {  
+    workingNum = operate(expressionArray);
+    calculatorDecimalButton.removeAttribute(`disabled`);
+    expressionArray.length = 0;
+    enableOperators();
+  } 
+  if(workingNum === `/0`) { 
     allClear();
     calculatorDisplay.value = `learn2math`;
-  } else {
-  expressionArray.length = 0;
-  expressionArray.push(workingNum);
-
-  calculatorDisplay.value = workingNum;
-
-
-  calculatorDecimalButton.removeAttribute(`disabled`);
-  enableOperators();
-  }
-  }
+  } else { calculatorDisplay.value = workingNum; }
+}
 
 let isNum = (buttonValue) =>  {
-  if(buttonValue.includes(`.`)) {
-    calculatorDecimalButton.setAttribute(`disabled`, ``);
-    workingNum += buttonValue;
-  } 
-  return (/\d/).test(buttonValue);
+  return (/\d|\./).test(buttonValue);
 }
 
 let singleNumExpression = (buttonValue) => {
-  console.log(`workingnum: ${workingNum} buttonValue: ${buttonValue}`);
   if(workingNum.includes(`.`) && buttonValue.includes(`!`)) alert(`Cannot perform factorial with decimal number.`);
+  if(+workingNum < 0 && buttonValue.includes(`!`)) alert(`Cannot perform factorial with negative number.`);
   else {
+    if(buttonValue.includes(`%`)) calculatorDecimalButton.setAttribute(`disabled`, ``);
+    if(buttonValue.includes(`%`) && workingNum === `0` || workingNum === ``) return;
     workingNum = operate([workingNum, buttonValue, 0]);
     calculatorDisplay.value = workingNum;
     expressionArray.length = 0;
@@ -190,35 +195,39 @@ let singleNumExpression = (buttonValue) => {
   }
 }
 
+let doubleNumExpression = (buttonValue) => {
+  calculatorDisplay.value += buttonValue;
+  if(expressionArray.length === 0){
+    expressionArray.push(workingNum, buttonValue);
+  } else { 
+    expressionArray[0] = workingNum;
+    expressionArray[1] = buttonValue;
+  }
+  calculatorDecimalButton.removeAttribute(`disabled`);
+  workingNum = ``;
+  disableOperators();
+}
+
+let updateWorkingNum = (buttonValue) => {
+  if(buttonValue.includes(`.`)) {
+    calculatorDecimalButton.setAttribute(`disabled`, ``);
+    workingNum += buttonValue;
+  } else {
+    workingNum += buttonValue;
+  } 
+  if(expressionArray.length === 0 || expressionArray.length === 1) {
+    calculatorDisplay.value = workingNum;
+  } else {
+    calculatorDisplay.value = expressionArray.join(``) + workingNum;
+  }
+}
+
 
 calculatorButtons.forEach((button) => {
   button.addEventListener(`click`, () => {
-    if(workingNum === undefined || workingNum === null || workingNum === NaN) workingNum=`0`;
-    if(expressionArray.includes(undefined)) expressionArray.length = 0;
-    console.log(`array: [${expressionArray}], workingNum: ${workingNum}, button ${button.textContent}`);
-    workingNum = workingNum.toString();
-    if(isNum(button.textContent)) {
-      workingNum += button.textContent;
-      if(expressionArray.length === 0){
-        calculatorDisplay.value = workingNum;
-      } else {
-        calculatorDisplay.value = expressionArray.join(``) + workingNum;
-      }
-    }
-    if(isAction(button.textContent))              doAction(button.textContent,expressionArray); 
+    if(isNum(button.textContent)) updateWorkingNum(button.textContent);
+    if(isAction(button.textContent)) doAction(button.textContent,expressionArray); 
     if(isSingleNumExpression(button.textContent)) singleNumExpression(button.textContent);
-
-    if(isTwoNumExpression(button.textContent))  {
-      calculatorDisplay.value += button.textContent;
-      if(expressionArray.length === 0){
-        expressionArray.push(workingNum, button.textContent);
-      } else { 
-        expressionArray[0] = workingNum;
-        expressionArray.push(button.textContent);
-      }
-      calculatorDecimalButton.removeAttribute(`disabled`);
-      workingNum = ``;
-      disableOperators();
-    }
+    if(isTwoNumExpression(button.textContent)) doubleNumExpression(button.textContent);
   });
 });
