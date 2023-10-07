@@ -7,7 +7,7 @@
   justify-content: center;
   border: 5px solid pink;
   padding: 50px;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: Impact, 'Arial Narrow Bold', sans-serif;
 }
 
 .calculator-container {
@@ -67,4 +67,20 @@ input:disabled::-webkit-input-placeholder {
 .button-percentage, .button-exponentiate, .button-add,
 .button-subtract, .button-multiply, .button-divide {
   width: 100%;
+}
+
+.button-operator {
+  background-color: orange;
+}
+.button-operator:hover {
+  background-color: orangered !important;
+}
+
+.button-equate {
+  background-color: lightcoral;
+}
+
+.button-equate:hover {
+  background-color: orangered !important;
+
 }
