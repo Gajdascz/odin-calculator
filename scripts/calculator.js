@@ -25,15 +25,49 @@ const percentage =(num) => (num/100);
 // Returns the remainder of dividend and divisor passed in as arguments. 
 const modulo = (dividend, divisor) => (dividend % divisor);
 
-
+// Selects important DOM elements for UI interaction.
 const calculatorButtons = document.querySelectorAll(`.calculator-buttons-container > * > button`);
 const operatorButtons = document.querySelectorAll(`.button-operator`);
 const calculatorDisplay = document.querySelector(`input#calculator-display`);
 const calculatorDecimalButton = document.querySelector(`.button-decimal`);
+
+// Used to map keyboard input to related calculator buttons.
+const keyToButton = {
+  '0': '0',
+  '1': '1',
+  '2': '2',
+  '3': '3',
+  '4': '4',
+  '5': '5',
+  '6': '6',
+  '7': '7',
+  '8': '8',
+  '9': '9',
+  '.': '.',
+  '+': '+',
+  '-': '-',
+  '*': '*',
+  '/': '/',
+  '^': '^',
+  '!': '!',
+  '%': '%',
+  'm': 'm',
+  'Enter': '=',
+  'Escape': 'AC',
+  'Backspace': '⬅',
+};
+
+// Stores the expression as number, operator, number for calculation.
 const expressionArray = [];
+
+// The working and frequently updated number used in calculations.
 let workingNum = ``;
 
+// The highest number the calculator can perform a factorial operation on without returning Infinity.
+const MAXFACTORIAL = 153;
 
+
+// Performs operation on the expression stored in an array.
 function operate(expressionArray) {
     let result = ``;
     let numOne = +expressionArray[0];
@@ -76,7 +110,7 @@ function operate(expressionArray) {
             break;
         }
     }
-    if(result === infinity){
+    if(result === Infinity){
       alert(`You've hit Infinity! Resetting Calculator`);
       result = ``;
       allClear();
@@ -87,7 +121,6 @@ function operate(expressionArray) {
       allClear();
     }
     if(result.includes(`.`)) {
-      alert(`Rounding to the nearest (10^20) decimal.`);
       result = Math.round(+result*(10**20))/(10**20);
       result = result.toString();
     }
@@ -95,16 +128,21 @@ function operate(expressionArray) {
     return result;
 }
 
+// Disable the calculator's operator buttons.
 let disableOperators = () => {
   operatorButtons.forEach((operator) =>{
     operator.setAttribute(`disabled`, ``);
   });
 }
+
+// Enable the calculator's operator buttons. 
 let enableOperators = () => {
   operatorButtons.forEach((operator) =>{
     operator.removeAttribute(`disabled`, ``);
   });
 }
+
+// Clears the calculator's memory.
 let allClear = () => {
   calculatorDisplay.value = ``;
   workingNum = ``;
@@ -113,6 +151,8 @@ let allClear = () => {
   enableOperators();
   checkDisplay();
 }
+
+// Removes the last input and updates the working number.
 let removeLast = () => {
   if(calculatorDisplay.value.slice(-1) === `.`) calculatorDecimalButton.removeAttribute(`disabled`);
   calculatorDisplay.value = calculatorDisplay.value.slice(0,-1);
@@ -121,7 +161,7 @@ let removeLast = () => {
 }
 
 
-
+// Checks if the input is an action.
 let isAction = (buttonValue) => {
   switch(buttonValue) {
     case `AC`:
@@ -134,7 +174,7 @@ let isAction = (buttonValue) => {
 }
 
 
-
+// Checks if the operation should work on two numbers.
 let isTwoNumExpression = (buttonValue) => {
   switch(buttonValue) {
     case `+`:
@@ -152,6 +192,8 @@ let isTwoNumExpression = (buttonValue) => {
   }
   return false;
 }
+
+// Checks if the operation should only work on one number.
 let isSingleNumExpression = (buttonValue) => {
   switch(buttonValue) {
     case `!`:
@@ -162,8 +204,8 @@ let isSingleNumExpression = (buttonValue) => {
   return false;
 }
 
-
-let doAction = (action,expressionArray=[]) => {
+// Does relevant action based on user input.
+let doAction = (action) => {
   switch(action) {
     case `AC`:
       allClear();
@@ -177,6 +219,7 @@ let doAction = (action,expressionArray=[]) => {
     }
 }
 
+// Performs calculation and updates the expression array.
 let equate = () => {
   if(expressionArray.length === 0 || expressionArray.length === 1) {
     expressionArray[0] = workingNum;
@@ -198,15 +241,17 @@ let equate = () => {
   }
 }
 
+// Checks if the input is a number or decimal.
 let isNum = (buttonValue) =>  {
   return (/\d|\./).test(buttonValue);
 }
 
+// Performs single number operations and ensures valid input.
 let singleNumExpression = (buttonValue) => {
   if(workingNum.includes(`.`) && buttonValue.includes(`!`)) alert(`Cannot perform factorial with decimal number.`);
   if(+workingNum < 0 && buttonValue.includes(`!`)) alert(`Cannot perform factorial with negative number.`);
-  if(+workingNum >= 153 && buttonValue.includes(`!`)) {
-    alert(`Factorials over 153 result in Infinity. Stopping calculation.`);
+  if(+workingNum >= MAXFACTORIAL && buttonValue.includes(`!`)) {
+    alert(`Factorials over ${MAXFACTORIAL} result in Infinity. Stopping calculation.`);
     return;
   }
   else {
@@ -220,6 +265,7 @@ let singleNumExpression = (buttonValue) => {
   }
 }
 
+// Sets up calculator to perform double number expressions.
 let doubleNumExpression = (buttonValue) => {
   calculatorDisplay.value += buttonValue;
   if(expressionArray.length === 0){
@@ -233,6 +279,7 @@ let doubleNumExpression = (buttonValue) => {
   disableOperators();
 }
 
+// Updates the working number and calculator display.
 let updateWorkingNum = (buttonValue) => {
   if(buttonValue.includes(`.`)) {
     calculatorDecimalButton.setAttribute(`disabled`, ``);
@@ -248,6 +295,7 @@ let updateWorkingNum = (buttonValue) => {
   checkDisplay();
 }
 
+// Ensures calculator display does not overflow and dynamically changes font-size
 let checkDisplay = () => {
   if(calculatorDisplay.value.length < 11) {
     calculatorDisplay.setAttribute(`style`, `font-size: 40px;`);
@@ -272,10 +320,22 @@ let checkDisplay = () => {
   }
 }
 
+
+// Responds to keyboard input from user by pressing relevant button on calculator
+document.addEventListener(`keyup`, (event) => {
+  const key = event.key;
+  if(Object.hasOwn(keyToButton, key)) {
+    const button = document.querySelector(`button[value='${key}']`);
+    if(button) button.click();
+  };
+});
+
+
+// Takes user input from UI and calls relevant function(s)
 calculatorButtons.forEach((button) => {
   button.addEventListener(`click`, () => {
     if(isNum(button.textContent)) updateWorkingNum(button.textContent);
-    if(isAction(button.textContent)) doAction(button.textContent,expressionArray); 
+    if(isAction(button.textContent)) doAction(button.textContent); 
     if(isSingleNumExpression(button.textContent)) singleNumExpression(button.textContent);
     if(isTwoNumExpression(button.textContent)) doubleNumExpression(button.textContent);
   });

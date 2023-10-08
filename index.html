@@ -8,8 +8,9 @@
   <title>TOP: Calculator</title>
 </head>
 <body>
+  <h1 class="page-header"> The Odin Project: Calculator</h1>
+  <h3 class="by-author">By Nolan Gajdascz</h3>
   <div class="page-container">
-
   <div class="calculator-container">
 
     <div class="calculator-display-container">
@@ -19,45 +20,55 @@
 
     <div class="calculator-buttons-container">
       <div class="calculator-row-container">
-        <button type="button" class="button-ac">AC</button>
-        <button type="button" class="button-open-paren" disabled>(</button>
-        <button type="button" class="button-close-paren" disabled>)</button>
-        <button type="button" class="button-operator button-divide">/</button>
-        <button type="button" class="button-operator button-exponentiate">^</button>
+        <button type="button" value ="Escape" class="button-ac">AC</button>
+        <button type="button" value="" class="button-open-paren" disabled>(</button>
+        <button type="button" value="" class="button-close-paren" disabled>)</button>
+        <button type="button" value="/" class="button-operator button-divide">/</button>
+        <button type="button" value="^" class="button-operator button-exponentiate">^</button>
       </div>
 
       <div class="calculator-row-container">
-        <button type="button" class="button-7">7</button>
-        <button type="button" class="button-8">8</button>
-        <button type="button" class="button-9">9</button>
-        <button type="button" class="button-operator button-multiply">*</button>
-        <button type="button" class="button-operator button-percentage">%</button>
+        <button type="button" value="7" class="button-7">7</button>
+        <button type="button" value="8" class="button-8">8</button>
+        <button type="button" value="9" class="button-9">9</button>
+        <button type="button" value="*" class="button-operator button-multiply">*</button>
+        <button type="button" value="%" class="button-operator button-percentage">%</button>
       </div>
 
       <div class="calculator-row-container">
-        <button type="button" class="button-4">4</button>
-        <button type="button" class="button-5">5</button>
-        <button type="button" class="button-6">6</button>
-        <button type="button" class="button-operator button-subtract">-</button>
-        <button type="button" class="button-operator button-factorial">!</button>
+        <button type="button" value="4" class="button-4">4</button>
+        <button type="button" value="5" class="button-5">5</button>
+        <button type="button" value="6" class="button-6">6</button>
+        <button type="button" value="-" class="button-operator button-subtract">-</button>
+        <button type="button" value="!" class="button-operator button-factorial">!</button>
       </div>
 
       <div class="calculator-row-container">
-        <button type="button" class="button-1">1</button>
-        <button type="button" class="button-2">2</button>
-        <button type="button" class="button-3">3</button>
-        <button type="button" class="button-operator button-add">+</button>
-        <button type="button" class="button-operator button-modulo">MOD</button>
+        <button type="button" value="1" class="button-1">1</button>
+        <button type="button" value="2" class="button-2">2</button>
+        <button type="button" value="3" class="button-3">3</button>
+        <button type="button" value="+" class="button-operator button-add">+</button>
+        <button type="button" value="m" class="button-operator button-modulo">MOD</button>
       </div>
 
       <div class="calculator-row-container">
-        <button type="button" class="button-0">0</button>
-        <button type="button" class="button-decimal">.</button>
-        <button type="button" class="button-back">⬅</button>
-        <button type="button" class="button-equate">=</button>
+        <button type="button" value="0" class="button-0">0</button>
+        <button type="button" value="." class="button-decimal">.</button>
+        <button type="button" value="Backspace" class="button-back">⬅</button>
+        <button type="button" value="Enter" class="button-equate">=</button>
       </div>
     </div>
-
+  </div>
+  <div class="calculator-information">
+    <h2 class="information-header">Calculator Information</h2>
+    <ul class="information-list">
+      <li>This calculator will always round to the nearest 10^20 decimal place.</li>
+      <li>Each key is mapped to it's respective button.</li>
+      <li>Shift+key must be pressed to enter +,*,!,%,^.</li>
+      <li>All Clear (AC) is mapped to Escape.</li>
+      <li>Back is mapped to Backspace.</li>
+      <li>Modulo (MOD) is mapped to m.</li>
+    </ul>
 
   </div>
 </div>
