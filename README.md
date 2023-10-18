@@ -1,6 +1,6 @@
 # odin-calculator
-TOP: Calculator
-Live Preview: https://gajdascz.github.io/odin-calculator/
+TOP: Calculator <br>
+Live Preview: https://gajdascz.github.io/odin-calculator/ <br>
 Project Page: [The Odin Project](https://www.theodinproject.com/lessons/foundations-calculator)
 
 # Capabilities 
